@@ -8,19 +8,16 @@
 // memanggil file functions.php
 require_once __DIR__ . '/includes/functions.php';
 
-$page_title = 'Uji Fungsi Modular - Percobaan 1';
-$daftar_mahasiswa = get_all_mahasiswa();
+$page_title = 'Uji fungsi modular - percobaan 1';
 $total_semua = count_total_mahasiswa();
 // Ambil keyword pencarian jika ada
 
 // Percobaan 4-4 Langkah 2
-$keyword = isset($_GET['search']) ? trim($_GET['search']) : '';
-$daftar_mahasiswa = get_all_mahasiswa($keywords);
-
-$total_semua = count_total_mahasiswa();
-$total_tampil = count($daftar_mahasiswa);
 
 // Ambil flash message dari session jika tersedia
+$keyword = trim($_GET['search'] ?? '');
+$daftar_mahasiswa = get_all_mahasiswa($keyword);
+$total_tampil = count($daftar_mahasiswa);
 $flash = get_flash_message();
 
 $page_title = 'Beranda - Sistem Informasi Data Mahasiswa';
@@ -112,15 +109,14 @@ require_once __DIR__ . '/includes/header.php';
             </thead>
             <tbody>
                 <?php if (empty($daftar_mahasiswa)): ?>
-                    <!-- Percobaan 4-2 Langkah 4 -->
                     <tr>
                         <td colspan="8" class="empty-row">
-                            >? = !empty($keyword) ? 'Tidak ditemukan data mahasiswa dengan kata kunci "' . htmlspecialchars($keyword) . '".' : 'Belum ada data mahasiswa yang tersimpan.' ?>
+                            <?= !empty($keyword)
+                                ? 'Tidak ditemukan data mahasiswa dengan kata kunci "' . htmlspecialchars($keyword, ENT_QUOTES, 'UTF-8') . '".'
+                                : 'Belum ada data mahasiswa yang tersimpan.' ?>
                         </td>
                     </tr>
                 <?php else: ?>
-
-                    <!-- Percobaan 4-2 Langkah 3 -->
                     <?php foreach ($daftar_mahasiswa as $index => $mhs): ?>
                         <tr>
                             <td><?= $index + 1 ?></td>
@@ -128,13 +124,12 @@ require_once __DIR__ . '/includes/header.php';
                                 <img src="img/avatar-default.svg" alt="Foto <?= htmlspecialchars($mhs['nama']) ?>" class="avatar-img" width="36" height="36">
                             </td>
                             <td><strong><?= htmlspecialchars($mhs['npm']) ?></strong></td>
-                                                        <td><?= htmlspecialchars($mhs['nama']) ?></td>
-                                                        <td><span class="badge"><?= htmlspecialchars($mhs['program_studi']) ?></span></td>
-                                                        <td><?= htmlspecialchars($mhs['angkatan']) ?></td>
-                                                        <td><a href="mailto:<?= htmlspecialchars($mhs['email']) ?>" class="link-email"><?= htmlspecialchars($mhs['email']) ?></a></td>
+                            <td><?= htmlspecialchars($mhs['nama']) ?></td>
+                            <td><span class="badge"><?= htmlspecialchars($mhs['program_studi']) ?></span></td>
+                            <td><?= htmlspecialchars($mhs['angkatan']) ?></td>
+                            <td><a href="mailto:<?= htmlspecialchars($mhs['email']) ?>" class="link-email"><?= htmlspecialchars($mhs['email']) ?></a></td>
                             <td>
-                                <!-- Percobaan 4-2 Langkah 5 -->
-                                <a href="proses_hapus.php?id=<?= urlencode($mhs['npm']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus mahasiswa: <?= htmlspecialchars(addslashes($mhs['nama'])) ?> (npm: <?= htmlspecialchars($mhs['npm']) ?>)?');">Hapus</a>
+                                <a href="proses_hapus.php?npm=<?= urldecode($mhs['npm']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('apakah anda yakin ingin menghapus mahasiswa: <?= htmlspecialchars(addslashes($mhs['nama'])) ?> (npm: <?= htmlspecialchars($mhs['npm']) ?>)?');">Hapus</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -179,7 +174,7 @@ require_once __DIR__ . '/includes/header.php';
                         placeholder="Contoh: Ahmad Fauzi" 
                         required 
                         minlength="3">
-                    <span class="form-help">* Minimal 3 karakter.</span>
+                    <span class="form-help">* Minpmal 3 karakter.</span>
                 </div>
 
                 <div class="form-group">
@@ -230,4 +225,5 @@ require_once __DIR__ . '/includes/header.php';
 </section>
 
 <!-- memanggil file footer.php -->
-
+<? require_once __DIR__ . '/includes/footer.php';
+?>

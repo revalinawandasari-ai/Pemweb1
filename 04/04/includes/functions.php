@@ -14,29 +14,29 @@ if (session_status() === PHP_SESSION_NONE) {
  * Inisialisasi data mahasiswa pada session jika belum ada
  */
 function init_mahasiswa_session() {
-    if  (!isset($_SESSION['daftar_mahasiswa'])) {
+    if (!isset($_SESSION['daftar_mahasiswa'])) {
         $_SESSION['daftar_mahasiswa'] = [
             [
-                'npm' => '230101001',
-                'nama' => 'Ahmad Fauzi',
-                'program_studi' => 'Teknik Informatika',
-                'angkatan' => 2023,
-                'email' => 'ahmad.fauzi@example.com'
-            ],
-            [
-                'npm' => '230101002',
-                'nama' => 'Siti Nurhaliza',
-                'program_studi' => 'TSistem Informasi',
-                'angkatan' => 2023,
-                'email' => 'siti.nurhaliza@example.com'
-            ],
-            [
-                'npm' => '240101015',
-                'nama' => 'Budi Santoso',
-                'program_studi' => 'Teknologi Informasi',
-                'angkatan' => 2024,
-                'email' => 'budi.santoso@example.com'
-            ]   
+            'npm' => '230101001',
+            'nama' => 'Ahmad fauzi',
+            'program_studi' => 'Teknik Informatika',
+            'angkatan' => 2023,
+            'email' => 'ahmad.fauzi@example.com'
+        ],
+        [
+            'npm' => '230101002',
+            'nama' => 'Siti Nurhailza',
+            'program_studi' => 'Sistem informasi',
+            'angkatan' => 2023,
+            'email' => 'siti.nurhaliza@example.com'
+        ],
+        [
+            'npm' => '240101015',
+            'nama' => 'Budi santoso',
+            'program_studi' => 'Teknologi Informasi',
+            'angkatan' => 2024,
+            'email' => 'budi.santoso@example.com'
+        ]
         ];
     }
 }
@@ -96,7 +96,6 @@ function tambah_mahasiswa($npm, $nama, $program_studi, $angkatan, $email) {
     $program_studi = sanitize($program_studi);
     $angkatan = (int) $angkatan;
     $email = sanitize($email);
-    
 
     // Validasi Server-Side
     if (empty($npm) || empty($nama) || empty($program_studi) || empty($angkatan) || empty($email)) {
@@ -126,7 +125,7 @@ function tambah_mahasiswa($npm, $nama, $program_studi, $angkatan, $email) {
     if (strlen($nama) < 3) {
         return [
             'status' => false,
-            'message' => 'Nama lengkap minimal 3 karakter!'
+            'message' => 'Nama lengkap minpmal 3 karakter!'
         ];
     }
 
@@ -193,29 +192,24 @@ function hapus_mahasiswa($npm) {
 }
 
 /**
- * Set flash message untuk feedback notifikasi pengguna*/
-    function set_flash_message($type, $message) {
-        $_SESSION['flash_message'] = [
-            'type' => $type,
-            'message' => $message
-        ];
-    }
-
-
-    function get_flash_message() {
-        if (isset($_SESSION['flash_message'])) {
-            $flash = $_SESSION['flash_message'];
-            unset($_SESSION['flash_message']);
-            return $flash;
-        }
-        return null;
-    }
-
-
+ * Set flash message untuk feedback notifikasi pengguna
+ */
+function set_flash_message($type, $message){
+    $_SESSION['flash_message'] = [
+        'type' => $type,
+        'message' => $message
+    ];
+}
 
 
 /**
  * Ambil dan hapus flash message
  */
-
-
+function get_flash_message() {
+    if(isset($_SESSION['flash_message'])){
+        $flash = $_SESSION['flash_message'];
+        unset($_SESSION['flash_message']);
+        return $flash;
+    }
+    return null;
+}
